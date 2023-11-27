@@ -10,7 +10,7 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-app.use("/css",express.static(__dirname + "public"))
+app.use("/css",express.static(__dirname + "p"))
 
 let jsonData = [];
 let TraceData = [];
@@ -39,6 +39,12 @@ app.post('/', async (req, res) => {
   }
 
 });
+
+app.post('/loadJson',async (req, res) => {
+  var data = req.body;
+  console.log(data);
+  res.send(data)
+})
 
 app.post('/runScript',async (req, res) => {
   TraceData=[];
