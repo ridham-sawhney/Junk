@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+body {
+    background-color: #522B5B;
+}
+
+.pathForm h3{
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+    padding-left: 10px
+}
+.traces h3{
+    font-family: 'Dancing Script', cursive;
+    font-size: 40px;
+    padding-left: 30%;
+}
+.content-parent h3{
+    font-family: 'Dancing Script', cursive;
+    font-size: 40px;
+    padding-left: 10px
+}
+
+table {
+    border: 1px solid white;
+    border-collapse: collapse;
+    margin:0;
+    padding:0;
+    width: 100%;
+    backdrop-filter: blur(10px);
+  }
+  table tr {
+    border: 2px solid #ddd;
+    padding: 5px;
+  }
+  table th, table td {
+    border:1px solid white;
+    padding: 10px;
+    text-align: center;
+  }
+  table th {
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+.content-parent{
+    flex:0 0 45%;
+    background-color: #854F6C;
+    height:500px;
+    padding-right: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    
+}
+
+.content {
+    opacity: 0.9;
+    z-index: -1;
+    /* width: 200px; */
+    height: 300px;
+    overflow: auto;
+}
+
+.traces{
+    flex:0 0 55%;
+    background-color: #FBE4D8;
+    /* width: 200px; */
+    padding-right: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    height:500px;
+    overflow: auto;
+    overflow-x: hidden;
+    border: 1px solid #ccc;
+}
+
+.pathForm {
+    background-color: #DFB6B2;
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(to top, #DFB6B2, #854F6C,#522B5B);
+    height: 70px;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    height: 500px;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
