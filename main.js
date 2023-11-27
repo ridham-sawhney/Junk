@@ -43,12 +43,24 @@ app.post('/', async (req, res) => {
 app.post('/loadJson',async (req, res) => {
   var data = req.body;
   console.log(data);
+  console.log(typeof data)
+  jsonData=data;
   res.send(data)
 })
 
 app.post('/runScript',async (req, res) => {
   TraceData=[];
-  var data = req.body;
+  // var data = req.body 
+   
+   var parentArray = [];
+      jsonData.forEach((jsonElement) => {
+        var childArray = [];
+        childArray.push(jsonElement.id)
+        childArray.push(jsonElement.password);
+        parentArray.push(childArray);
+      })
+      var data = parentArray;
+    
   try{
     var access = await axios.get(`http://ridhamsawhney.com/SurveyAccess//data.json`);
   }
