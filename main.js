@@ -3,19 +3,19 @@ const { fork } = require('child_process');
 const axios = require('axios');
 const fs = require('fs').promises;
 
-const { Builder, By, until,WebDriverWait } = require('selenium-webdriver');
+const { Builder, By, until, WebDriverWait } = require('selenium-webdriver');
 const moment = require('moment');
 const os = require('os');
 const path = require('path');
 
-const port =process.env.port || 5002;
+const port = process.env.port || 5002;
 
 const app = express();
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-app.use("/css",express.static(__dirname + "p"))
+app.use("/css", express.static(__dirname + "p"))
 
 let jsonData = [];
 let TraceData = [];
@@ -45,76 +45,77 @@ app.post('/', async (req, res) => {
 
 });
 
-app.post('/loadJson',async (req, res) => {
+app.post('/loadJson', async (req, res) => {
   var data = req.body;
   console.log(data);
   console.log(typeof data)
-  jsonData=data;
+  jsonData = data;
   res.send(data)
 })
 
-app.post('/runScript',async (req, res) => {
-  TraceData=[];
+app.post('/runScript', async (req, res) => {
+  TraceData = [];
   // var data = req.body 
-   
-   var parentArray = [];
-      jsonData.forEach((jsonElement) => {
-        var childArray = [];
-        childArray.push(jsonElement.id)
-        childArray.push(jsonElement.password);
-        parentArray.push(childArray);
-      })
-      var data = parentArray;
-    
-  try{
+
+  var parentArray = [];
+  jsonData.forEach((jsonElement) => {
+    var childArray = [];
+    childArray.push(jsonElement.id)
+    childArray.push(jsonElement.password);
+    parentArray.push(childArray);
+  })
+  var data = parentArray;
+
+  try {
     var access = await axios.get(`http://ridhamsawhney.com/SurveyAccess//data.json`);
   }
-  catch(error){
+  catch (error) {
     res.send("Something went wrong.")
   }
-  access=access.data[0].access;
+  access = access.data[0].access;
   console.log(access);
-  if(access!="Granted"){
+  if (access != "Granted") {
     console.log("***********");
-   res.send("Access Denied : Contact Ridham.");
+    res.send("Access Denied : Contact Ridham.");
   }
 
   else if (data.length < 1) {
-    
-   res.send("Load some ids..");
-    
+
+    res.send("Load some ids..");
+
   }
   else {
-    const driver = await new Builder().forBrowser('chrome').build();
-    driver.manage().window().maximize();
 
-    await driver.get('https://curativesurvey.com/Userf/UserLogin');
-    await driver.sleep(5000);
-    await driver.quit();
-    // const childProcess = fork('firsttest.js');
-    // let childOutput = '';
+    const childProcess = fork('firsttest.js');
+    let childOutput = '';
 
 
-    // childProcess.send(data)
+    childProcess.send(data)
 
-    // childProcess.on('message', (message) => {
-    //   console.log('Received message from child process:', message);
-    //   if (message) {
-    //     console.log("message")
-    //     childOutput = message;
-    //   }
-    // });
+    childProcess.on('message', (message) => {
+      console.log('Received message from child process:', message);
+      if (message) {
+        console.log("message")
+        childOutput = message;
+      }
+    });
 
-    // childProcess.on('exit', (code) => {
-    //   console.log(`Child Process Exited with Code ${code}`);
-    //   res.send(childOutput);
-    // });
+    childProcess.on('exit', (code) => {
+      console.log(`Child Process Exited with Code ${code}`);
+      res.send(childOutput);
+    });
   }
 });
 
-app.post('/refresh', (req, res) => {
+app.post('/refresh', async(req, res) => {
   jsonData = [];
   TraceData = [];
+  const driver = await new Builder().forBrowser('chrome').build();
+  driver.manage().window().maximize();
+
+  await driver.get('https://curativesurvey.com/Userf/UserLogin');
+  await driver.sleep(5000);
+  await driver.quit();
   res.redirect('/');
   // res.render('form', { jsonData ,TraceData});
 })
