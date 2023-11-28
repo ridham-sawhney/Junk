@@ -3,6 +3,11 @@ const { fork } = require('child_process');
 const axios = require('axios');
 const fs = require('fs').promises;
 
+const { Builder, By, until,WebDriverWait } = require('selenium-webdriver');
+const moment = require('moment');
+const os = require('os');
+const path = require('path');
+
 const port =process.env.port || 5002;
 
 const app = express();
@@ -80,24 +85,30 @@ app.post('/runScript',async (req, res) => {
     
   }
   else {
-    const childProcess = fork('firsttest.js');
-    let childOutput = '';
+    const driver = await new Builder().forBrowser('chrome').build();
+    driver.manage().window().maximize();
+
+    await driver.get('https://curativesurvey.com/Userf/UserLogin');
+    await driver.sleep(5000);
+    await driver.quit();
+    // const childProcess = fork('firsttest.js');
+    // let childOutput = '';
 
 
-    childProcess.send(data)
+    // childProcess.send(data)
 
-    childProcess.on('message', (message) => {
-      console.log('Received message from child process:', message);
-      if (message) {
-        console.log("message")
-        childOutput = message;
-      }
-    });
+    // childProcess.on('message', (message) => {
+    //   console.log('Received message from child process:', message);
+    //   if (message) {
+    //     console.log("message")
+    //     childOutput = message;
+    //   }
+    // });
 
-    childProcess.on('exit', (code) => {
-      console.log(`Child Process Exited with Code ${code}`);
-      res.send(childOutput);
-    });
+    // childProcess.on('exit', (code) => {
+    //   console.log(`Child Process Exited with Code ${code}`);
+    //   res.send(childOutput);
+    // });
   }
 });
 
