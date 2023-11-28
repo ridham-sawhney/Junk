@@ -37,36 +37,7 @@
   </div>
  <br> 
  <input type="file" id="fileInput" />
- <button onclick="readFile()">Read File</button>
- <script>
-  function readFile() {
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        const fileContent = e.target.result;
-        console.log('File Content:', fileContent);
-        // You can now use fileContent as needed
-        fetch('/loadJson', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: fileContent
-      })
-        .then(response => response.text())
-        .then((message) => {
-          console.log( message);
-        })
-      };
-
-      reader.readAsText(file);
-    }
-  }
-</script>
+ 
   <div class="scriptContainer">
     <form action="/refresh" method="post">
       <button type="submit" class="pathButton">Refresh<span class="material-symbols-outlined">

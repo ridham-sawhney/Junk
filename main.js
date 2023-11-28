@@ -45,13 +45,6 @@ app.post('/', async (req, res) => {
 
 });
 
-app.post('/loadJson', async (req, res) => {
-  var data = req.body;
-  console.log(data);
-  console.log(typeof data)
-  jsonData = data;
-  res.send(data)
-})
 
 app.post('/runScript', async (req, res) => {
   TraceData = [];
@@ -107,15 +100,9 @@ app.post('/runScript', async (req, res) => {
   }
 });
 
-app.post('/refresh', async(req, res) => {
+app.post('/refresh', async (req, res) => {
   jsonData = [];
   TraceData = [];
-  const driver = await new Builder().forBrowser('chrome').build();
-  driver.manage().window().maximize();
-
-  await driver.get('https://curativesurvey.com/Userf/UserLogin');
-  await driver.sleep(5000);
-  await driver.quit();
   res.redirect('/');
   // res.render('form', { jsonData ,TraceData});
 })
