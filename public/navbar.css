@@ -27,7 +27,7 @@
 
 
 .accordion {
-    background-color: #f4f4f4;
+    background-color: #31d11c;
     color: #333;
     cursor: pointer;
     padding: 18px;
@@ -36,6 +36,12 @@
     border: 1px solid black;
     outline: none;
     transition: 0.4s;
+  }
+  .accordion.error {
+    background-color: red;
+  }
+  details[open] {
+    background-color: white !important; /* Change the background color when open */
   }
 
   .panel {
@@ -162,4 +168,12 @@ input {
   ::-webkit-scrollbar-thumb:hover {
     background-color: #DFB6B2; /* color of the thumb on hover */
     border:3px solid #522B5B;
+  }
+
+
+  .passed{
+    color: rgb(36, 212, 54)
+  }
+  .passed.failed{
+    color:rgb(199, 18, 18)
   }

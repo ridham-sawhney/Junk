@@ -132,15 +132,17 @@ function log(message,overwrite = false) {
     fs.writeFileSync(`${folderPath}/${moment().format('YYYY-MM-DD')}_Survey.txt`, logMessage, { flag: fileFlag });
     console["info"](message);
 }
+let cc=0;
 
 async function Work(Users) {
     console.log("Survey Started")
-    const driver = await new Builder().forBrowser('chrome').build();
+    let driver ;
+    driver = await new Builder().forBrowser('chrome').build();
     driver.manage().window().maximize();
 
     await driver.get('https://curativesurvey.com/Userf/UserLogin');
     await driver.sleep(5000);
-   log(`\n\n[${moment().format('YYYY-MM-DD HH:mm:ss')}]\n########################\n`,true)
+    log(`\n\n[${moment().format('YYYY-MM-DD HH:mm:ss')}]\n########################\n`,true)
 
 
     for (let i = 0; i < Users.length; i++) {
@@ -157,27 +159,27 @@ async function Work(Users) {
         await clickSignIn(driver);
         await waitLoadingToStop(driver);
         await driver.sleep(2000);
-
+        
         await clickTakeSurvey(driver);
         //await driver.sleep(2000);
         await driver.wait(until.elementsLocated(By.css('a[data-cid]')), 20000);
-
+        
         const elements = await driver.findElements(By.css('a[data-cid]'));
-
+        
         const actions = driver.actions({ async: true });
         await driver.executeScript("arguments[0].scrollIntoView();", elements[0]);
         await actions.move({ origin: elements[0] }).perform();
-
+        
         await elements[0].click();
         await waitSurveyLoadingToStop(driver);
         //await driver.sleep(5000);
         await giveSurvey(driver,1);
         //await clickSubmit(driver);
-       // await driver.sleep(1000);
+        // await driver.sleep(1000);
         //await clickClose(driver);
         await driver.sleep(500);
-
-    
+        
+        
         await driver.executeScript("arguments[0].scrollIntoView();", elements[1]);
         await actions.move({ origin: elements[1] }).perform();
         await elements[1].click();
@@ -188,29 +190,29 @@ async function Work(Users) {
         //await driver.sleep(1000);
         //await clickClose(driver);
         await driver.sleep(500);
-
+        
         await driver.executeScript("arguments[0].scrollIntoView();", elements[2]);
         await actions.move({ origin: elements[2] }).perform();
         await elements[2].click();
         await waitSurveyLoadingToStop(driver);
-       // await driver.sleep(5000);
+        // await driver.sleep(5000);
         await giveSurvey(driver,3);
         //await clickSubmit(driver);
         //await driver.sleep(1000);
         //await clickClose(driver);
         await driver.sleep(500);
-
+        
         await driver.executeScript("arguments[0].scrollIntoView();", elements[3]);
         await actions.move({ origin: elements[3] }).perform();
         await elements[3].click();
         await waitSurveyLoadingToStop(driver);
-       // await driver.sleep(5000);
+        // await driver.sleep(5000);
         await giveSurvey(driver,4);
         //await clickSubmit(driver);
         //await driver.sleep(1000);
         //await clickClose(driver);
         await driver.sleep(500);
-
+        
         await driver.executeScript("arguments[0].scrollIntoView();", elements[4]);
         await actions.move({ origin: elements[4] }).perform();
         await elements[4].click();
@@ -226,12 +228,22 @@ async function Work(Users) {
         await logoutUser(driver);
         }
         catch(error){
+            cc++;
             log("\n==================================\n")
             log("#Error:\n")
             log(error);
             log("\n==================================\n")
-            await logoutUser(driver);
-            await driver.sleep(1500);
+            for(let i=returnDataElement.SurveyResults.length;i<5;i++)
+            {
+              returnDataElement.SurveyResults.push(`Survey ${i+1} failed , restart survey or do manually!!`)
+            }
+            returnData.push(returnDataElement);
+            await driver.quit();
+            driver = await new Builder().forBrowser('chrome').build();
+            driver.manage().window().maximize();
+
+            await driver.get('https://curativesurvey.com/Userf/UserLogin');
+            await driver.sleep(2500);
         }
         
 

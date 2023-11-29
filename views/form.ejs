@@ -146,8 +146,8 @@
             message.forEach(item => {
             const accordionItem = createAccordionItem(item.user, item.SurveyResults);
             accordionContainer.appendChild(accordionItem);
-            alert("Successfully Saved Survey Traces  in FolderLocaiton [../Downloads/SurveyTraces]")
-            });
+          });
+          alert("Successfully Saved Survey Traces  in FolderLocaiton [../Downloads/SurveyTraces]")
 
           }
 
@@ -174,11 +174,13 @@
     var newDone=0;
     var alreadyDone=0;
     var passed=0;
+    var failed=0;
 
     const accordionItem = document.createElement('details');
     accordionItem.classList.add('accordion');
 
     const summary = document.createElement('summary');
+    
     summary.textContent = title;
     accordionItem.appendChild(summary);
    
@@ -186,19 +188,30 @@
     accordionItem.appendChild(list);
     content.forEach(element => {
         const elementDiv = document.createElement('li');
+        elementDiv.classList.add('passed');
         if(element.includes("already"))
         {
           alreadyDone++;
         }
-        if(element.includes("done") && !element.includes("already"))
+        else if(element.includes("done") && !element.includes("already"))
         {
           newDone++;
+        }
+        else{
+          failed++;
+          elementDiv.classList.add('failed');
         }
         elementDiv.textContent = element;
         list.appendChild(elementDiv);
       });
+      if((alreadyDone+newDone)==5)
       summary.textContent=title+` [Already Done:${alreadyDone} , Newly Done:${newDone} , Passed : ${alreadyDone+newDone}] `
+      else{
+        summary.textContent=title+` [Already Done:${alreadyDone} , Newly Done:${newDone} , Passed : ${alreadyDone+newDone}] , Failed : ${failed}] `
+        accordionItem.classList.add('error');
+      }
 
+      
 
     return accordionItem;
   }
