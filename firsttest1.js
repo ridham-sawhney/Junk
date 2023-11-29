@@ -4,9 +4,7 @@ fs.mkdir(folderPath,{recursive:!0},(e=>{e?console.error("Error creating folder:"
 // return await driver.wait(until.elementLocated(By.css('.bg-blur:not(:visible)')), 20000);
 return element=await e.findElement(By.className("bg-blur")),await e.wait((async function(){return await e.executeScript('return window.getComputedStyle(arguments[0]).getPropertyValue("display") === "none"',element)}),2e4,"Element did not become invisible within 10 seconds")}async function clickTakeSurvey(e){return await e.wait(until.elementLocated(By.className("card info-card survey-card")),2e4),await e.findElement(By.className("card info-card survey-card")).click()}async function logoutUser(e){return await e.wait(until.elementLocated(By.className("user")),2e4),await e.findElement(By.className("user")).click(),await e.wait(until.elementLocated(By.className("logout-btn")),2e4),await e.findElement(By.className("logout-btn")).click(),await e.wait(until.elementLocated(By.className("blk-btn btn-fill")),2e4),await e.findElement(By.className("blk-btn btn-fill")).click();
 // return await driver.sleep(2000);
-}async function giveSurvey(e,t){var a=!1;try{const t=await e.findElement(By.className("nosurd"));a=await t.isDisplayed()}catch(e){}if(a)
-//  log(`\tSurvey ${count} was already done.`)
-return void returnDataElement.SurveyResults.push(`Survey ${t} was already done.`);await e.wait(until.elementsLocated(By.css(".lisq")),2e4);const i=await e.findElements(By.css(".lisq"));for(const t of i){
+}async function giveSurvey(e,t){var a=!1;try{const t=await e.findElement(By.className("nosurd"));a=await t.isDisplayed()}catch(e){}if(a)return log(`\tSurvey ${t} was already done.`),void returnDataElement.SurveyResults.push(`Survey ${t} was already done.`);await e.wait(until.elementsLocated(By.css(".lisq")),2e4);const i=await e.findElements(By.css(".lisq"));for(const t of i){
 // Scroll to the division if necessary
 await e.executeScript("arguments[0].scrollIntoView(true)",t);
 // Find all inputs inside the current division

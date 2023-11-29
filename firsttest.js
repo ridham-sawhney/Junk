@@ -87,7 +87,7 @@ async function giveSurvey(driver,count) {
    
 
     if(isSurveyDone){
-      //  log(`\tSurvey ${count} was already done.`)
+        log(`\tSurvey ${count} was already done.`)
         returnDataElement.SurveyResults.push(`Survey ${count} was already done.`);
         return;
     }
