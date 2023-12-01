@@ -155,13 +155,15 @@
             LastUpdate.classList.add('LastUpdate');
             LastUpdate.textContent=`[LastUpdated:${new Date().toLocaleString()}]`
             document.getElementById("TraceTitle").appendChild(LastUpdate)
-            
+            s
             const accordionContainer = document.getElementById('resultTraces');
             accordionContainer.innerHTML='';
-            message=JSON.parse(message)
+            message=JSON.parse(message);
+            var count=1;
             message.forEach(item => {
-            const accordionItem = createAccordionItem(item.user, item.SurveyResults);
+            const accordionItem = createAccordionItem(`${count}. ${item.user}`, item.SurveyResults);
             accordionContainer.appendChild(accordionItem);
+            count++;
           });
           alert("Successfully Saved Survey Traces  in FolderLocaiton [../Downloads/SurveyTraces]")
 
