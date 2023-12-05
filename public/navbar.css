@@ -31,7 +31,6 @@
     color: #333;
     cursor: pointer;
     padding: 18px;
-    width: 100%;
     text-align: left;
     border: 1px solid black;
     outline: none;
@@ -39,6 +38,9 @@
   }
   .accordion.error {
     background-color: red;
+  }
+  .accordion.allreadyDone {
+    background-color: rgb(255, 191, 0);
   }
   details[open] {
     background-color: white !important; /* Change the background color when open */
@@ -176,4 +178,26 @@ input {
   }
   .passed.failed{
     color:rgb(199, 18, 18)
+  }
+
+
+  .accordionContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .accordionHolder{
+    flex: 3;
+    align-items: center;
+  }
+
+  .accordionButtonHolder{
+    flex:1;
+    align-items : center;
+  }
+
+  .accordionButton{
+    padding: 18px;
+    background-color: #854F6C;
   }

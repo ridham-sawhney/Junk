@@ -161,7 +161,7 @@
             message=JSON.parse(message);
             var count=1;
             message.forEach(item => {
-            const accordionItem = createAccordionItem(`${count}. ${item.user}`, item.SurveyResults);
+            const accordionItem = createAccordionItem(item.user,count, item.SurveyResults);
             accordionContainer.appendChild(accordionItem);
             count++;
           });
@@ -188,14 +188,24 @@
       return parentArray;
     }
     
-    function createAccordionItem(title, content) {
+    function createAccordionItem(title,count, content) {
+    var user=title;
+    title=count+". "+title;
     var newDone=0;
     var alreadyDone=0;
     var passed=0;
     var failed=0;
+    const accordionContainer = document.createElement('div');
+    accordionContainer.classList.add("accordionContainer");
+
+    const accordionHolder = document.createElement('div');
+    accordionHolder.classList.add("accordionHolder");
+    accordionContainer.appendChild(accordionHolder);
 
     const accordionItem = document.createElement('details');
     accordionItem.classList.add('accordion');
+
+    accordionHolder.appendChild(accordionItem);
 
     const summary = document.createElement('summary');
     
@@ -229,11 +239,116 @@
         accordionItem.classList.add('error');
       }
 
-      
+      if(alreadyDone==5){
+        accordionItem.classList.add('allreadyDone');
+      }
+  
 
-    return accordionItem;
+    const accordionButtonHolder = document.createElement('div');
+    accordionButtonHolder.classList.add("accordionButtonHolder");
+    accordionContainer.appendChild(accordionButtonHolder);
+
+    const accordionButton = document.createElement('button');
+    accordionButton.classList.add("accordionButton");
+    accordionButton.textContent="Run Again";
+    accordionButton.addEventListener('click',()=> runScriptForOneElement(user));
+    accordionButtonHolder.appendChild(accordionButton);
+      
+    return accordionContainer;
+    // return accordionItem;
   }
   
+
+  function runScriptForOneElement(user) {
+      console.log(user)
+      const jsonData = `<%- JSON.stringify(jsonData) %>`;
+      const dataToSent = getArraytoJson(JSON.parse(jsonData));
+      // if(dataToSent.length==0){
+      //   alert("Load some ids");
+      //   return;
+      // }
+      var finalData = findUserById(user,JSON.parse(jsonData));
+      console.log(finalData)
+      if(!finalData)
+      {
+        alert("Id not Found ! Please run whole Script.");
+        return;
+      }
+
+      document.body.classList.add('blur');
+      fetch('/runScriptSingleElement', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalData)
+      })
+        .then(response => response.text())
+        .then((message) => {
+          if(message=="Access Denied : Contact Ridham." || message=="Load some ids.."){
+            alert(message);
+          }
+          else{
+            const Traceheading=document.getElementsByClassName("LastUpdate");
+             if (Traceheading.length > 0) {
+             // Remove all elements with the specified class name
+              Array.from(Traceheading).forEach(function(element) {
+                element.remove();
+            });
+            }
+
+            const LastUpdate= document.createElement('h4');
+            LastUpdate.classList.add('LastUpdate');
+            LastUpdate.textContent=`[LastUpdated:${new Date().toLocaleString()}]`
+            document.getElementById("TraceTitle").appendChild(LastUpdate)
+            console.log(message)
+            message=JSON.parse(message);
+            message=message[0];
+
+            var accordionList = document.getElementsByClassName("accordionContainer");
+            Array.from(accordionList).forEach(function(element) {
+               console.log(element.textContent);
+               var elementText=element.textContent;
+               if(elementText.includes(user)){
+                element.textContent='';
+
+                newelement=createAccordionItem(message.user,"[RE]",message.SurveyResults);
+                element.parentNode.replaceChild(newelement,element);
+               }
+            });
+            // const accordionContainer = document.getElementById('resultTraces');
+            // accordionContainer.innerHTML='';
+            // message=JSON.parse(message);
+            // var count=1;
+            // message.forEach(item => {
+            // const accordionItem = createAccordionItem(item.user,count, item.SurveyResults);
+            // accordionContainer.appendChild(accordionItem);
+            // count++;
+          // });
+          alert("Successfully Saved Survey Traces  in FolderLocaiton [../Downloads/SurveyTraces]")
+
+          }
+
+          document.body.classList.remove('blur');
+         
+          //alert(message)
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function findUserById(id,userArray) {
+      console.log(id);
+      console.log(userArray)
+      var array=[];
+      var usr= userArray.find(user => user.id === id);
+      console.log(usr);
+      if(!usr){
+        return 0;
+      }
+      array.push(usr)
+      return array;
+   } 
+
   </script>
 
 </body>

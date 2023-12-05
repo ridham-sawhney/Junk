@@ -46,12 +46,142 @@ app.post('/', async (req, res) => {
 });
 
 
+function createPromise(data){
+  return new Promise((resolve, reject) => {
+    const childProcess = fork('firsttest.js');
+    let childOutput = '';
+
+    childProcess.send(data)
+
+    childProcess.on('message', (message) => {
+      console.log('Received message from child process:', message);
+      if (message) {
+        console.log("message")
+        childOutput = message;
+      }
+    });
+
+    childProcess.on('exit', (code) => {
+      console.log(`Child Process Exited with Code ${code}`);
+      resolve(childOutput);
+    });
+  });
+}
+
 app.post('/runScript', async (req, res) => {
   TraceData = [];
   // var data = req.body 
-
   var parentArray = [];
   jsonData.forEach((jsonElement) => {
+    var childArray = [];
+    childArray.push(jsonElement.id)
+    childArray.push(jsonElement.password);
+    parentArray.push(childArray);
+  })
+  var data = parentArray;
+
+  try {
+    var access = await axios.get(`http://ridhamsawhney.com/SurveyAccess//data.json`);
+  }
+  catch (error) {
+    res.send("Something went wrong.")
+  }
+  access = access.data[0].access;
+  console.log(access);
+  if (access != "Granted") {
+    console.log("***********");
+    res.send("Access Denied : Contact Ridham.");
+  }
+
+  else if (data.length < 1) {
+
+    res.send("Load some ids..");
+
+  }
+  else {
+
+    var chunkSize = 5 ;
+    var childProcessPromises = [];
+    for(let i=0;i<data.length;i+=chunkSize)
+    {
+      childProcessPromises.push(createPromise(data.slice(i, i + chunkSize)))
+    }
+
+    Promise.all(childProcessPromises).then((response) => {
+      console.log(response)
+      var finalResponse = [];
+      for(let i=0;i<response.length;i++)
+      {
+        finalResponse.push(...response[i])
+      }
+      console.log(finalResponse);
+      res.send(finalResponse)
+    })
+
+    // if (data.length > 1) {
+    //   var midPoint = Math.ceil(data.length / 2)
+    //   var childProcess1RequestData = data.slice(0, midPoint);
+    //   var childProcess2RequestData = data.slice(midPoint);
+
+    //   const childProcess1Promise = new Promise((resolve, reject) => {
+    //     const childProcess1 = fork('firsttest.js');
+    //     let childOutput1 = '';
+
+    //     childProcess1.send(childProcess1RequestData)
+
+    //     childProcess1.on('message', (message) => {
+    //       console.log('Received message from child process:', message);
+    //       if (message) {
+    //         console.log("message")
+    //         childOutput1 = message;
+    //       }
+    //     });
+
+    //     childProcess1.on('exit', (code) => {
+    //       console.log(`Child Process Exited with Code ${code}`);
+    //       resolve(childOutput1);
+    //     });
+    //   });
+
+    //   const childProcess2Promise = new Promise((resolve, reject) => {
+    //     const childProcess2 = fork('firsttest.js');
+    //     let childOutput2 = '';
+
+    //     childProcess2.send(childProcess2RequestData);
+
+    //     childProcess2.on('message', (message) => {
+    //       console.log('Received message from child process:', message);
+    //       if (message) {
+    //         console.log("message")
+    //         childOutput2 = message;
+    //       }
+    //     });
+
+    //     childProcess2.on('exit', (code) => {
+    //       console.log(`Child Process Exited with Code ${code}`);
+    //       resolve(childOutput2);
+    //     });
+    //   });
+
+    //   Promise.all([childProcess1Promise, childProcess2Promise]).then((response) => {
+    //     var childProcess1Response = response[0];
+    //     var childProcess2Response = response[1];
+    //     console.log([...childProcess1Response, ...childProcess2Response])
+    //     res.send([...childProcess1Response, ...childProcess2Response])
+    //   })
+    //  }
+    
+
+  }
+});
+
+
+
+app.post('/runScriptSingleElement', async (req, res) => {
+  TraceData = [];
+
+  var parentArray = [];
+  req.body.forEach((jsonElement) => {
     var childArray = [];
     childArray.push(jsonElement.id)
     childArray.push(jsonElement.password);
