@@ -20,7 +20,7 @@ fs.mkdir(folderPath, { recursive: true }, (err) => {
     if (err) {
       console.error('Error creating folder:', err);
     } else {
-      console.log(`Folder "${folderName}" created successfully in the Downloads directory.`);
+      console.log(`Folder ${folderName} created successfully in the Downloads directory.`);
     }
   });
 
