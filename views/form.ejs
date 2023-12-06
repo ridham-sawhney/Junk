@@ -104,6 +104,22 @@
       <div class="TraceTitle" id="TraceTitle">
         <h3 >Traces</h3>
       </div>
+      <div class="entries-container">
+        <div class="entry">
+          <div class="status-box passed"></div>
+          <span>Passed</span>
+        </div>
+    
+        <div class="entry">
+          <div class="status-box completed"></div>
+          <span>Already Completed</span>
+        </div>
+    
+        <div class="entry">
+          <div class="status-box failed"></div>
+          <span>Failed</span>
+        </div>
+      </div>
       <div id="resultTraces">
         <% if (TraceData.length > 0) { %>
           <table>
@@ -138,7 +154,7 @@
     function runScript() {
       const jsonData = `<%- JSON.stringify(jsonData) %>`;
       const dataToSent = getArraytoJson(JSON.parse(jsonData));
-      
+
       document.body.classList.add('blur');
       fetch('/runScript', {
         method: 'POST',
