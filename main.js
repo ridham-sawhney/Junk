@@ -120,7 +120,7 @@ app.post('/runScript', async (req, res) => {
   }
   else {
 
-    var chunkSize = 5 ;
+    var chunkSize = Math.max(Math.ceil(data.length / 5), 1) ;
     var childProcessPromises = [];
     for(let i=0;i<data.length;i+=chunkSize)
     {
