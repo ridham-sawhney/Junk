@@ -16,13 +16,13 @@ const folderName = 'SurveyTraces';
 const folderPath = path.join(downloadsPath, folderName);
 
 // Create the folder
-fs.mkdir(folderPath, { recursive: true }, (err) => {
-    if (err) {
-      console.error('Error creating folder:', err);
-    } else {
-      console.log(`Folder ${folderName} created successfully in the Downloads directory.`);
-    }
-  });
+// fs.mkdir(folderPath, { recursive: true }, (err) => {
+//     if (err) {
+//       console.error('Error creating folder:', err);
+//     } else {
+//       console.log(`Folder ${folderName} created successfully in the Downloads directory.`);
+//     }
+//   });
 
 
 
@@ -87,7 +87,7 @@ async function giveSurvey(driver,count) {
    
 
     if(isSurveyDone){
-        log(`\tSurvey ${count} was already done.`)
+       // log(`\tSurvey ${count} was already done.`)
         returnDataElement.SurveyResults.push(`Survey ${count} was already done.`);
         return;
     }
@@ -121,33 +121,34 @@ async function giveSurvey(driver,count) {
     await clickClose(driver);
     returnDataElement.SurveyResults.push(`Survey ${count} done.`);
 
-   log(`\tSurvey ${count} done.`)
+  // log(`\tSurvey ${count} done.`)
 
 
 }
 
-function log(message,overwrite = false) {
-    const logMessage = `${message}\n`;
-    const fileFlag = overwrite ? 'w' : 'a';
-    fs.writeFileSync(`${folderPath}/${moment().format('YYYY-MM-DD')}_Survey.txt`, logMessage, { flag: fileFlag });
-    console["info"](message);
-}
+// function log(message,overwrite = false) {
+//     const logMessage = `${message}\n`;
+//     const fileFlag = overwrite ? 'w' : 'a';
+//     fs.writeFileSync(`${folderPath}/${moment().format('YYYY-MM-DD')}_Survey.txt`, logMessage, { flag: fileFlag });
+//     console["info"](message);
+// }
 let cc=0;
 
 async function Work(Users) {
-    console.log("Survey Started")
+   // console.log("Survey Started")
     let driver ;
     driver = await new Builder().forBrowser('chrome').build();
     driver.manage().window().maximize();
 
     await driver.get('https://curativesurvey.com/Userf/UserLogin');
     await driver.sleep(5000);
-    log(`\n\n[${moment().format('YYYY-MM-DD HH:mm:ss')}]\n########################\n`,true)
+   
+   // log(`\n\n[${moment().format('YYYY-MM-DD HH:mm:ss')}]\n########################\n`,true)
 
 
     for (let i = 0; i < Users.length; i++) {
-        log(`-----------------------------\n`);
-        log(`[User : ${Users[i][0]}]\n`);
+        //log(`-----------------------------\n`);
+       // log(`[User : ${Users[i][0]}]\n`);
         returnDataElement={
             "user":"",
             "SurveyResults":[]
@@ -229,10 +230,10 @@ async function Work(Users) {
         }
         catch(error){
             cc++;
-            log("\n==================================\n")
-            log("#Error:\n")
-            log(error);
-            log("\n==================================\n")
+            // log("\n==================================\n")
+            // log("#Error:\n")
+            // log(error);
+            // log("\n==================================\n")
             for(let i=returnDataElement.SurveyResults.length;i<5;i++)
             {
               returnDataElement.SurveyResults.push(`Survey ${i+1} failed , restart survey or do manually!!`)
@@ -254,7 +255,7 @@ async function Work(Users) {
 };
 
 process.on('message', async (message) => {
-    console.log(message)
+    //console.log(message)
     await Work(message);
   
     // Use the data in the child process (modify or process it)
