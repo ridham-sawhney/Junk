@@ -30,13 +30,33 @@ app.post('/', async (req, res) => {
     jsonData = [];
     TraceData = [];
 
-    var path = req.body.path;
-    path = path.replace(/^"|"$/g, '');
+    var username = req.body.key;
+    try {
+      var users = await axios.get(`http://ridhamsawhney.com/SurveyAccess//users.json`);
+    }
+    catch (error) {
+      alert("Something went wrong.");
+      res.redirect('/');
+    }
 
-    // res.send(`Form submitted with Path: ${path}`);
-    const data = await loadData(path);
-    jsonData = data;
-    console.log(jsonData);
+    users = users.data[0].Users;
+    var found = false;
+    for(var i = 0; i < users.length;i++)
+    {
+       if(username==users[i])
+       {
+        found=true;
+       }
+    }
+    if(found){
+      var path = req.body.path;
+      path = path.replace(/^"|"$/g, '');
+      const data = await loadData(path);
+      jsonData = data;
+      console.log(jsonData);
+    }
+
+    
     res.redirect('/');
   }
   catch (err) {

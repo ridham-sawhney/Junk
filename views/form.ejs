@@ -58,10 +58,15 @@
         <br><br>
        
         <form action="/" method="post">
+          <label for="key" class="pathLabel">Security Key :</label>
+          <input type="password" id="key" placeholder="SecurityKey" name="key" required>
+          <input type="checkbox" id="visibility">
+          <label for="visibility" class="pathcheckbox">Show Passkey </label>
+          <br>
           <label for="path" class="pathLabel">Data File Path:</label>
-          <input type="text" id="path" name="path" required>
-
+          <input type="text" id="path" name="path" placeholder="File Path" required>
           <button type="submit" class="pathButton">Load Ids</button>
+
         </form>
         
       </div>
@@ -122,13 +127,18 @@
 
 
   <script>
+  var checkbox=document.getElementById("visibility");
+  checkbox.addEventListener('change', function () {
+        if (this.checked) {
+          document.getElementById("key").type="text";
+        } else {
+          document.getElementById("key").type="password";
+        }
+      });
     function runScript() {
       const jsonData = `<%- JSON.stringify(jsonData) %>`;
       const dataToSent = getArraytoJson(JSON.parse(jsonData));
-      // if(dataToSent.length==0){
-      //   alert("Load some ids");
-      //   return;
-      // }
+      
       document.body.classList.add('blur');
       fetch('/runScript', {
         method: 'POST',
