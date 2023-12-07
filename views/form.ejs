@@ -231,7 +231,6 @@
    }</script><div class="toast-container"><div class="image"></div><div class="text-content"></div><div class="close"></div></div><script>window.addEventListener("load", async (event) => {
     
       var response = await LoadNotification();
-      console.log(response);
       var publish = response[0].publish;
       var Message=response[0].message;
       var containLink=response[0].containsLink;
@@ -276,7 +275,6 @@ async function LoadNotification(){
       myImage.src="/images/me.jpg";
       myImage.height="70";
       myImage.width="50";
-      console.log(myImage)
       imageContainer.appendChild(myImage);
     }
 
@@ -309,6 +307,5 @@ async function LoadNotification(){
       myImage.src="/images/cross.png";
       myImage.height="25";
       myImage.width="25";
-      console.log(myImage)
       imageContainer.appendChild(myImage);
     }</script></body></html>
