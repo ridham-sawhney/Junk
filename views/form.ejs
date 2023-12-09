@@ -250,7 +250,9 @@
         };
 
         closeBtn.addEventListener("click", stopDisplayingToast);
-        toastLink.addEventListener("click", stopDisplayingToast);
+        if(toastLink){
+          toastLink.addEventListener("click", stopDisplayingToast);
+        }
       }
       
 
@@ -260,7 +262,7 @@
     
 
 async function LoadNotification(){
-     return fetch("http://ridhamsawhney.com/SurveyAccess//notification.json")
+     return fetch("https://projectservices.onrender.com/notification")
       .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

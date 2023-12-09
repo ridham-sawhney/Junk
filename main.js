@@ -32,12 +32,13 @@ app.post('/', async (req, res) => {
 
     var username = req.body.key;
     try {
-      var users = await axios.get(`http://ridhamsawhney.com/SurveyAccess//users.json`);
+      var users = await axios.get(`https://projectservices.onrender.com/users`);
     }
     catch (error) {
       alert("Something went wrong.");
       res.redirect('/');
     }
+    console.log(users.data.Users)
 
     users = users.data[0].Users;
     var found = false;
@@ -101,13 +102,13 @@ app.post('/runScript', async (req, res) => {
   var data = parentArray;
 
   try {
-    var access = await axios.get(`http://ridhamsawhney.com/SurveyAccess//data.json`);
+    var access = await axios.get(`https://projectservices.onrender.com/data`);
   }
   catch (error) {
     res.send("Something went wrong.")
   }
   access = access.data[0].access;
-  console.log(access);
+  console.log(access)
   if (access != "Granted") {
     console.log("***********");
     res.send("Access Denied : Contact Ridham.");
@@ -210,7 +211,7 @@ app.post('/runScriptSingleElement', async (req, res) => {
   var data = parentArray;
 
   try {
-    var access = await axios.get(`http://ridhamsawhney.com/SurveyAccess//data.json`);
+    var access = await axios.get(`https://projectservices.onrender.com/data`);
   }
   catch (error) {
     res.send("Something went wrong.")
